@@ -25,10 +25,10 @@ while nComicsPrinted < nComicsToPrint:
         imgWidth, imgHeight = img.size
     scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
     resizedImg = img.resize((int(scalingFactor * imgWidth), int(scalingFactor * imgHeight)))
-    resizedImg.save("resizedImg.png")
-    p.text(str(comic.number) + comic.getAsciiTitle())
-    p.text(comic.link)
-    p.image("resizedImg.png")
+    resizedImg.save('resizedImg.png')
+    p.text(str(comic.number) + ': ' comic.getAsciiTitle())
+    p.text('\n' + comic.link + '\n\n')
+    p.image('resizedImg.png')
     p.text('\n')
     for line in comicAltText:
         p.text('\n' + line)
