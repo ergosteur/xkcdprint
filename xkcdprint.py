@@ -24,7 +24,7 @@ while nComicsPrinted < nComicsToPrint:
         img = img.rotate(270, expand=True)
         imgWidth, imgHeight = img.size
     scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
-    resizedImg = img.resize(int(scalingFactor * imgWidth), int(scalingFactor * imgHeight))
+    resizedImg = img.resize((int(scalingFactor * imgWidth), int(scalingFactor * imgHeight)))
     p.block_text(comic.number + comic.getTitle())
     p.text(comic.link)
     p.image(resizedImg)
