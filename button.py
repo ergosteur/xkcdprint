@@ -6,11 +6,8 @@ import os
 buttonPin = 18
 script = "python ./xkcdprint.py"
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(buttonPin,GPIO.IN)
-
+GPIO.setup(buttonPin,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 while True:
-  #assuming the script to call is long enough we can ignore bouncing
-  if (GPIO.input(buttonPin)):
-    #this is the script that will be called (as root)
-    #os.system(script)
-    print "Pressed"
+    if (GPIO.input(buttonPin)):
+        os.system(script)
+        time.sleep(1)
