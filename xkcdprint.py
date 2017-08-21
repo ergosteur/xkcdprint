@@ -50,15 +50,20 @@ p = escpos.printer.Usb(0x04b8, 0x0e15)
 while nComicsPrinted < nComicsToPrint:
     comic = xkcd.getComic(nStartComic - nComicsPrinted)
     comicImg = comic.download()
-    comicAltText = textwrap.wrap(str(comic.getAsciiAltText()), 40)
+    comicAltText = textwrap.wrap(comic.getAsciiAltText().decode('utf-8'), 40)
     img = Image.open(comicImg.encode('utf-8'))
     imgWidth, imgHeight = img.size
+    
     if imgWidth > imgHeight and (imgWidth / imgHeight) > 1.4: #handle square-ish images
         img = img.rotate(270, expand=True)
         imgWidth, imgHeight = img.size
-    scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
+        scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
+    elif imgWidth > imgHeight and (imgWidth / imgHeight) <= 1.4:
+        scalingFactor = (maxPixelWidth / max(imgWidth, imgHeight))
+    else:
+        scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
     resizedImg = img.resize((int(scalingFactor * imgWidth), int(scalingFactor * imgHeight)))
-    p.text('\n' + str(comic.getAsciiTitle()))
+    p.text('\n' + comic.getAsciiTitle().decode('utf-8'))
     p.text('\n' + comic.link + '\n\n')
     p.image(resizedImg)
     p.text('\n')
