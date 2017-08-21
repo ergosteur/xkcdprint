@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+"""This script fetches comic(s) from xkcd.com (using xkcd python module) and outputs them to an Epson thermal
+printer using the python-escpos module"""
 import escpos
 import escpos.printer
 import xkcd
@@ -22,7 +24,7 @@ except getopt.GetoptError:
     sys.exit(2)
 
 for opt, arg in opts:
-    if opt == '-h':
+    if opt in ("-h", "--help"):
         print(usageText)
         sys.exit()
     elif opt in ("-r", "--random"):
@@ -48,7 +50,7 @@ p = escpos.printer.Usb(0x04b8, 0x0e15)
 while nComicsPrinted < nComicsToPrint:
     comic = xkcd.getComic(nStartComic - nComicsPrinted)
     comicImg = comic.download()
-    comicAltText = textwrap.wrap(comic.getAsciiAltText(), 40)
+    comicAltText = textwrap.wrap(str(comic.getAsciiAltText()), 40)
     img = Image.open(comicImg.encode('utf-8'))
     imgWidth, imgHeight = img.size
     if imgWidth > imgHeight and (imgWidth / imgHeight) > 1.4: #handle square-ish images
@@ -56,10 +58,9 @@ while nComicsPrinted < nComicsToPrint:
         imgWidth, imgHeight = img.size
     scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
     resizedImg = img.resize((int(scalingFactor * imgWidth), int(scalingFactor * imgHeight)))
-    resizedImg.save('resizedImg.png')
-    p.text('\n' + comic.getAsciiTitle())
+    p.text('\n' + str(comic.getAsciiTitle()))
     p.text('\n' + comic.link + '\n\n')
-    p.image('resizedImg.png')
+    p.image(resizedImg)
     p.text('\n')
     for line in comicAltText:
         p.text('\n' + line)
