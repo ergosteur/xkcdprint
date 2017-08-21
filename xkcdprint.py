@@ -14,7 +14,7 @@ usageText = 'Usage: xkcdprint.py [-n <number of comics to print>] [-r] [-i <comi
 nComicsToPrint = 1
 nComicsPrinted = 0
 comicRandom = False
-maxPixelWidth = 512
+maxPixelWidth = float(512)
 nStartComic = xkcd.getLatestComic().number
 
 try:
@@ -60,6 +60,7 @@ while nComicsPrinted < nComicsToPrint:
         scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
     elif imgWidth > imgHeight and (imgWidth / imgHeight) <= 1.4:
         scalingFactor = (maxPixelWidth / max(imgWidth, imgHeight))
+        print(scalingFactor)
     else:
         scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
     resizedImg = img.resize((int(scalingFactor * imgWidth), int(scalingFactor * imgHeight)))
