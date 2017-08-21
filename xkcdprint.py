@@ -51,7 +51,7 @@ while nComicsPrinted < nComicsToPrint:
     comicAltText = textwrap.wrap(comic.getAsciiAltText(), 40)
     img = Image.open(comicImg.encode('utf-8'))
     imgWidth, imgHeight = img.size
-    if imgWidth > imgHeight:
+    if imgWidth > imgHeight and (imgWidth / imgHeight) > 1.4: #handle square-ish images
         img = img.rotate(270, expand=True)
         imgWidth, imgHeight = img.size
     scalingFactor = (maxPixelWidth / min(imgWidth, imgHeight))
